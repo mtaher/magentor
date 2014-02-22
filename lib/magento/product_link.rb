@@ -15,8 +15,8 @@ module Magento
       # 
       # string type - link type (cross_sell, up_sell, related, grouped)
       # mixed product - product ID or Sku
-      def list(*args)
-        results = commit("list", *args)
+      def list(client, *args)
+        results = commit(client, "list", *args)
         results.collect do |result|
           new(result)
         end
@@ -33,8 +33,8 @@ module Magento
       # mixed product - product ID or Sku
       # mixed linkedProduct - product ID or Sku for link
       # array data - link data (position, qty, etc ...) (optional)
-      def assign(*args)
-        commit('assign', *args)
+      def assign(client, *args)
+        commit(client, 'assign', *args)
       end
       
       # catalog_product_link.update
@@ -48,8 +48,8 @@ module Magento
       # mixed product - product ID or Sku
       # mixed linkedProduct - product ID or Sku for link
       # array data - link data (position, qty, etc ...) (optional)
-      def update(*args)
-        commit('update', *args)
+      def update(client, *args)
+        commit(client, 'update', *args)
       end
             
       # catalog_product_link.remove
@@ -62,16 +62,16 @@ module Magento
       # string type - link type (up_sell, cross_sell, related, grouped)
       # mixed product - product ID or Sku
       # mixed linkedProduct - product ID or Sku for link
-      def remove(*args)
-        commit('remove', *args)
+      def remove(client, *args)
+        commit(client, 'remove', *args)
       end
       
       # catalog_product_link.types
       # Retrieve product link types
       # 
       # Return: array
-      def types
-        commit('types', nil)
+      def types(client)
+        commit(client, 'types', nil)
       end
       
       # catalog_product_link.attributes
@@ -82,8 +82,8 @@ module Magento
       # Arguments:
       # 
       # string type - link type (cross_sell, up_sell, related, grouped)
-      def attributes(*args)
-        commit('attributes', *args)
+      def attributes(client, *args)
+        commit(client, 'attributes', *args)
       end
     end
   end

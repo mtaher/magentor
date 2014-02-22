@@ -19,8 +19,8 @@ module Magento
       # 
       # mixed product - product ID or Sku
       # mixed storeView - store view ID or code (optional)
-      def list(*args)
-        results = commit("list", *args)
+      def list(client, *args)
+        results = commit(client, "list", *args)
         results.collect do |result|
           new(result)
         end
@@ -37,8 +37,8 @@ module Magento
       # array data - image data. requires file content in base64, and image mime-type. 
       #   Example: array(’file’ ⇒ array(’content’ ⇒ base64_encode($file), ‘mime’ ⇒ ‘type/jpeg’)
       #   mixed storeView - store view ID or code (optional)
-      def create(*args)
-        id = commit("create", *args)
+      def create(client, *args)
+        id = commit(client, "create", *args)
         record = info(id)
         record
       end
@@ -53,8 +53,8 @@ module Magento
       # mixed product - product ID or Sku
       # string file - image file name
       # mixed storeView - store view ID or code (optional)
-      def info(*args)
-        new(commit("info", *args))
+      def info(client, *args)
+        new(commit(client, "info", *args))
       end
 
       # catalog_product_attribute_media.update
@@ -68,8 +68,8 @@ module Magento
       # string file - image file name
       # array data - image data (label, position, exclude, types)
       # mixed storeView - store view ID or code (optional)
-      def update(*args)
-        commit("update", *args)
+      def update(client, *args)
+        commit(client, "update", *args)
       end
 
       # catalog_product_attribute_media.remove
@@ -81,8 +81,8 @@ module Magento
       # 
       # mixed product - product ID or Sku
       # string file - image file name
-      def remove(*args)
-        commit("remove", *args)
+      def remove(client, *args)
+        commit(client, "remove", *args)
       end
 
       # catalog_product_attribute_media.currentStore
@@ -93,8 +93,8 @@ module Magento
       # Arguments:
       # 
       # mixed storeView - store view code or ID (optional)
-      def current_store(*args)
-        commit("currentStore", *args)
+      def current_store(client, *args)
+        commit(client, "currentStore", *args)
       end
 
       # catalog_product_attribute_media.types
@@ -105,12 +105,12 @@ module Magento
       # Arguments:
       # 
       # int setId - product attribute set ID
-      def types(*args)
-        commit("types", *args)
+      def types(client, *args)
+        commit(client, "types", *args)
       end
       
-      def find_by_product_id_or_sku(id)
-        list(id)
+      def find_by_product_id_or_sku(client, id)
+        list(client, id)
       end
     end
     

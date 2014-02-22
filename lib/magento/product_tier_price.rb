@@ -13,8 +13,8 @@ module Magento
       # Arguments:
       # 
       # mixed product - product ID or Sku
-      def info(*args)
-        new(commit("info", *args))
+      def info(client, *args)
+        new(commit(client, "info", *args))
       end
 
       # catalog_product_attribute_tier_price.update
@@ -27,12 +27,12 @@ module Magento
       # mixed product - product ID or Sku
       # array tierPrices - array of tier prices 
       #   =>  array(array(’website’ ⇒ ..., ‘customer_group_id’ ⇒ ..., ‘qty’ ⇒ ..., ‘price’ ⇒ ...))
-      def update(*args)
-        commit("update", *args)
+      def update(client, *args)
+        commit(client, "update", *args)
       end
       
-      def find_by_product_id_or_sku(id)
-        list(id)
+      def find_by_product_id_or_sku(client, id)
+        list(client, id)
       end
     end
     

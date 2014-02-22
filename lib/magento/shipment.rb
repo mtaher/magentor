@@ -16,8 +16,8 @@ module Magento
       # Arguments:
       # 
       # array filters - filters for shipments list
-      def list(*args)
-        results = commit("list", *args)
+      def list(client, *args)
+        results = commit(client, "list", *args)
         results.collect do |result|
           new(result)
         end
@@ -31,8 +31,8 @@ module Magento
       # Arguments:
       # 
       # string shipmentIncrementId - order shipment increment id
-      def info(*args)
-        new(commit("info", *args))
+      def info(client, *args)
+        new(commit(client, "info", *args))
       end
       
       # sales_order_shipment.create
@@ -47,8 +47,8 @@ module Magento
       # string comment - shipment comment (optional)
       # boolean email - send e-mail flag (optional)
       # boolean includeComment - include comment in e-mail flag (optional)
-      def create(*args)
-        id = commit("create", *args)
+      def create(client, *args)
+        id = commit(client, "create", *args)
         record = info(id)
         record
       end
@@ -64,8 +64,8 @@ module Magento
       # string comment - shipment comment
       # boolean email - send e-mail flag (optional)
       # boolean includeInEmail - include comment in e-mail flag (optional)
-      def add_comment(*args)
-        commit('addComment', *args)
+      def add_comment(client, *args)
+        commit(client, 'addComment', *args)
       end
       
       # sales_order_shipment.addTrack
@@ -79,8 +79,8 @@ module Magento
       # string carrier - carrier code
       # string title - tracking title
       # string trackNumber - tracking number
-      def add_track(*args)
-        commit('addTrack', *args)
+      def add_track(client, *args)
+        commit(client, 'addTrack', *args)
       end
       
       # sales_order_shipment.removeTrack
@@ -92,8 +92,8 @@ module Magento
       # 
       # string shipmentIncrementId - shipment increment id
       # int trackId - track id
-      def remove_track(*args)
-        commit('removeTrack', *args)
+      def remove_track(client, *args)
+        commit(client, 'removeTrack', *args)
       end
       
       # sales_order_shipment.getCarriers
@@ -104,15 +104,15 @@ module Magento
       # Arguments:
       # 
       # string orderIncrementId - order increment id
-      def get_carriers(*args)
-        commit('getCarriers', *args)
+      def get_carriers(client, *args)
+        commit(client, 'getCarriers', *args)
       end
       
-      def find_by_id(id)
-        info(id)
+      def find_by_id(client, id)
+        info(client, id)
       end
       
-      def find(find_type, options = {})
+      def find(client, find_type, options = {})
         filters = {}
         options.each_pair { |k, v| filters[k] = {:eq => v} }
         results = list(filters)
@@ -120,10 +120,10 @@ module Magento
         raise Magento::ApiError, "100  Requested shipment not exists." if results.blank?
         
         if find_type == :first
-          info(results.first.increment_id)
+          info(client, results.first.increment_id)
         else
           results.collect do |s|
-            info(s.increment_id)
+            info(client, s.increment_id)
           end
         end
         

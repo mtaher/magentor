@@ -7,7 +7,7 @@ module Magento
       # 
       # Return: array
       def list
-        results = commit("list", nil)
+        results = commit(client, "list", nil)
         results.collect do |result|
           new(result)
         end

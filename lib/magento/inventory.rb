@@ -5,8 +5,8 @@ module Magento
         "product_stock"
       end
 
-      def list(*args)
-        results = commit("list", *args)
+      def list(client, *args)
+        results = commit(client, "list", *args)
         results.collect do |result|
           new(result)
         end

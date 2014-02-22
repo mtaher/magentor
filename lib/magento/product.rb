@@ -15,8 +15,8 @@ module Magento
       # 
       # array filters - array of filters by attributes (optional)
       # mixed storeView - store view ID or code (optional)
-      def list(client, *args)
-        results = commit(client, "list", *args)
+      def list(connection, *args)
+        results = commit(connection, "list", *args)
         results.collect do |result|
           new(result)
         end
@@ -33,9 +33,9 @@ module Magento
       # int set - product attribute set ID
       # string sku - product SKU
       # array productData - array of attributes values
-      def create(client, *args)
-        id = commit(client, "create", *args)
-        record = info(client, id)
+      def create(connection, *args)
+        id = commit(connection, "create", *args)
+        record = info(connection, id)
         record
       end
 
@@ -49,8 +49,8 @@ module Magento
       # mixed product - product ID or Sku
       # mixed storeView - store view ID or code (optional)
       # array attributes - list of attributes that will be loaded (optional)
-      def info(client, *args)
-        new(commit(client, "info", *args))
+      def info(connection, *args)
+        new(commit(connection, "info", *args))
       end
 
       # catalog_product.update
@@ -63,8 +63,8 @@ module Magento
       # mixed product - product ID or Sku
       # array productData - array of attributes values
       # mixed storeView - store view ID or code (optional)
-      def update(client, *args)
-        commit(client, "update", *args)
+      def update(connection, *args)
+        commit(connection, "update", *args)
       end
 
 
@@ -76,8 +76,8 @@ module Magento
       # Arguments:
       # 
       # mixed product - product ID or Sku
-      def delete(client, *args)
-        commit(client, "delete", *args)
+      def delete(connection, *args)
+        commit(connection, "delete", *args)
       end
 
       # catalog_product.currentStore
@@ -88,8 +88,8 @@ module Magento
       # Arguments:
       # 
       # mixed storeView - store view ID or code (optional)
-      def current_store(client, *args)
-        commit(client, "currentStore", *args)
+      def current_store(connection, *args)
+        commit(connection, "currentStore", *args)
       end
 
       # catalog_product.setSpecialPrice
@@ -104,8 +104,8 @@ module Magento
       # string fromDate - from date (optional)
       # string toDate - to date (optional)
       # mixed storeView - store view ID or code (optional)
-      def set_special_price(client, *args)
-        commit(client, 'setSpecialPrice', *args)
+      def set_special_price(connection, *args)
+        commit(connection, 'setSpecialPrice', *args)
       end
 
       # catalog_product.getSpecialPrice
@@ -117,22 +117,22 @@ module Magento
       # 
       # mixed product - product ID or Sku
       # mixed storeView - store view ID or code (optional)
-      def get_special_price(client, *args)
-        commit(client, 'getSpecialPrice', *args)
+      def get_special_price(connection, *args)
+        commit(connection, 'getSpecialPrice', *args)
       end
       
-      def find_by_id_or_sku(client, id)
-        find_by_id(client, id)
+      def find_by_id_or_sku(connection, id)
+        find_by_id(connection, id)
       end
       
-      def find_by_id(client, id)
-        info(client, id)
+      def find_by_id(connection, id)
+        info(connection, id)
       end
 
-      def find(client, find_type, options = {})
+      def find(connection, find_type, options = {})
         filters = {}
         options.each_pair { |k, v| filters[k] = {:eq => v} }
-        results = list(client, filters)
+        results = list(connection, filters)
         if find_type == :first
           results.first
         else
@@ -140,24 +140,24 @@ module Magento
         end
       end
 
-      def all(client)
-        list(client)
+      def all(connection)
+        list(connection)
       end
       
     end
     
-    def delete(client)
-      self.class.delete(client, self.id)
+    def delete(connection)
+      self.class.delete(connection, self.id)
     end
     
-    def update_attribute(client, name, value)
+    def update_attribute(connection, name, value)
       @attributes[name] = value
-      self.class.update(client, self.id, Hash[*[name.to_sym, value]])
+      self.class.update(connection, self.id, Hash[*[name.to_sym, value]])
     end
     
-    def update_attributes(client, attrs)
+    def update_attributes(connection, attrs)
       attrs.each_pair { |k, v| @attributes[k] = v }
-      self.class.update(client, self.id, attrs)
+      self.class.update(connection, self.id, attrs)
     end
   end
 end

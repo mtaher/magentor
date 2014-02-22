@@ -13,10 +13,10 @@ module Magento
     
     module ClassMethods
       # Uses the classes name and method to make an rpc call through connection
-      def commit(client, method, *args)
+      def commit(connection, method, *args)
         # TODO: need to catch errors sent back from magento and bubble them up appropriately
         method = "#{api_path}.#{method}"
-        client.call(method, *args)
+        connection.call(method, *args)
       end
       
       def api_path

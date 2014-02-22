@@ -12,8 +12,8 @@ module Magento
       # Arguments:
       # 
       # array products - list of products IDs or Skus
-      def list(client, *args)
-        results = commit(client, "list", *args)
+      def list(connection, *args)
+        results = commit(connection, "list", *args)
         results.collect do |result|
           new(result)
         end
@@ -28,8 +28,8 @@ module Magento
       # 
       # mixed product - product ID or Sku
       # array data - data to change (qty, is_in_stock)
-      def update(client, *args)
-        commit(client, 'update', *args)
+      def update(connection, *args)
+        commit(connection, 'update', *args)
       end
     end
   end

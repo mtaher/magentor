@@ -6,28 +6,28 @@ module Magento
       # Retrieve list of countries.
       # 
       # Return: array.
-      def list(client)
-        results = commit(client, "list", nil)
+      def list(connection)
+        results = commit(connection, "list", nil)
         results.collect do |result|
           new(result)
         end
       end
       
-      def all(client)
-        list(client)
+      def all(connection)
+        list(connection)
       end
       
-      def find_by_id(client, id)
-        list(client).select{ |c| c.id == id }.first
+      def find_by_id(connection, id)
+        list(connection).select{ |c| c.id == id }.first
       end
       
-      def find_by_iso(client, iso)
-        list(client).select{ |c| [c.iso2_code, c.iso3_code].include? iso }.first
+      def find_by_iso(connection, iso)
+        list(connection).select{ |c| [c.iso2_code, c.iso3_code].include? iso }.first
       end
     end
     
-    def regions(client)
-      Magento::Region.find_by_country(client, self.iso2_code)
+    def regions(connection)
+      Magento::Region.find_by_country(connection, self.iso2_code)
     end
   end
 end

@@ -13,8 +13,8 @@ module Magento
       # Return: array Arguments:
       # 
       # array filters - filters for invoices list (optional)
-      def list(client, *args)
-        results = commit(client, "list", *args)
+      def list(connection, *args)
+        results = commit(connection, "list", *args)
         results.collect do |result|
           new(result)
         end
@@ -28,8 +28,8 @@ module Magento
       # Arguments:
       # 
       # string invoiceIncrementId - invoice increment id
-      def info(client, *args)
-        new(commit(client, "info", *args))
+      def info(connection, *args)
+        new(commit(connection, "info", *args))
       end
       
       # sales_order_invoice.create
@@ -44,8 +44,8 @@ module Magento
       # string comment - invoice comment (optional)
       # boolean email - send invoice on e-mail (optional)
       # boolean includeComment - include comments in e-mail (optional)
-      def create(client, *args)
-        id = commit(client, "create", *args)
+      def create(connection, *args)
+        id = commit(connection, "create", *args)
         record = info(id)
         record
       end
@@ -59,8 +59,8 @@ module Magento
       # string comment - invoice comment
       # boolean email - send invoice on e-mail (optional)
       # boolean includeComment - include comments in e-mail (optional)
-      def add_comment(client, *args)
-        commit(client, 'addComment', *args)
+      def add_comment(connection, *args)
+        commit(connection, 'addComment', *args)
       end
       
       # sales_order_invoice.capture
@@ -85,8 +85,8 @@ module Magento
       # Also note there is a method call in the model that checks this for you canCapture(), and it also 
       # verifies that the payment is able to be captured, so the invoice state might not be the only 
       # condition that’s required to allow it to be captured.
-      def capture(client, *args)
-        commit(client, 'capture', *args)
+      def capture(connection, *args)
+        commit(connection, 'capture', *args)
       end
       
       # sales_order_invoice.void
@@ -97,8 +97,8 @@ module Magento
       # Arguments:
       # 
       # string invoiceIncrementId - invoice increment id
-      def void(client, *args)
-        commit(client, 'void', *args)
+      def void(connection, *args)
+        commit(connection, 'void', *args)
       end
       
       # sales_order_invoice.cancel
@@ -109,18 +109,18 @@ module Magento
       # Arguments:
       # 
       # string invoiceIncrementId - invoice increment id
-      def cancel(client, *args)
-        commit(client, 'cancel', *args)
+      def cancel(connection, *args)
+        commit(connection, 'cancel', *args)
       end
       
-      def find_by_id(client, id)
-        info(client, id)
+      def find_by_id(connection, id)
+        info(connection, id)
       end
 
-      def find(client, find_type, options = {})
+      def find(connection, find_type, options = {})
         filters = {}
         options.each_pair { |k, v| filters[k] = {:eq => v} }
-        results = list(client, filters)
+        results = list(connection, filters)
         if find_type == :first
           results.first
         else

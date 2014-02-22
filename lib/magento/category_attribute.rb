@@ -8,8 +8,8 @@ module Magento
       # Retrieve category attributes
       # 
       # Return: array
-      def list(client)
-        results = commit(client, "list", nil)
+      def list(connection)
+        results = commit(connection, "list", nil)
         results.collect do |result|
           new(result)
         end
@@ -23,8 +23,8 @@ module Magento
       # Arguments:
       # 
       # mixed storeView - Store view ID or code. (optional)
-      def current_store(client, *args)
-        commit(client, "currentStore", *args)
+      def current_store(connection, *args)
+        commit(connection, "currentStore", *args)
       end
 
       # catalog_category_attribute.options
@@ -34,8 +34,8 @@ module Magento
       # 
       # attributeId - attribute id or code
       # storeView - store view id or code
-      def options(client, *args)
-        commit(client, "options", *args)
+      def options(connection, *args)
+        commit(connection, "options", *args)
       end
     end
   end

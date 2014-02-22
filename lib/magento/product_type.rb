@@ -6,8 +6,8 @@ module Magento
       # Retrieve product types
       # 
       # Return: array
-      def list(client)
-        results = commit(client, "list", nil)
+      def list(connection)
+        results = commit(connection, "list", nil)
         results.collect do |result|
           new(result)
         end

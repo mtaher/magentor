@@ -10,23 +10,23 @@ module Magento
       # Arguments:
       # 
       # string $country - Country code in ISO2 or ISO3
-      def list(client, *args)
-        results = commit(client, "list", *args)
+      def list(connection, *args)
+        results = commit(connection, "list", *args)
         results.collect do |result|
           new(result)
         end
       end
       
-      def find_by_country(client, iso)
-        list(client, iso)
+      def find_by_country(connection, iso)
+        list(connection, iso)
       end
       
-      def find_by_country_and_id(client, iso, id)
-        list(client, iso).select{ |r| r.id == id }.first
+      def find_by_country_and_id(connection, iso, id)
+        list(connection, iso).select{ |r| r.id == id }.first
       end
       
-      def find_by_country_iso_and_iso(client, country_iso, iso)
-        list(client, country_iso).select{ |r| r.code == iso }.first
+      def find_by_country_iso_and_iso(connection, country_iso, iso)
+        list(connection, country_iso).select{ |r| r.code == iso }.first
       end
     end
   end

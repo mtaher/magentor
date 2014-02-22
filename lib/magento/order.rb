@@ -14,8 +14,8 @@ module Magento
       # Arguments:
       # 
       # array filters - filters for order list (optional)
-      def list(client, *args)
-        results = commit(client, "list", *args)
+      def list(connection, *args)
+        results = commit(connection, "list", *args)
         results.collect do |result|
           new(result)
         end
@@ -29,8 +29,8 @@ module Magento
       # Arguments:
       # 
       # string orderIncrementId - order increment id
-      def info(client, *args)
-        new(commit(client, "info", *args))
+      def info(connection, *args)
+        new(commit(connection, "info", *args))
       end
       
       # sales_order.addComment
@@ -44,8 +44,8 @@ module Magento
       # string status - order status
       # string comment - order comment (optional)
       # boolean notify - notification flag (optional)
-      def add_comment(client, *args)
-        commit(client, 'addComment', *args)
+      def add_comment(connection, *args)
+        commit(connection, 'addComment', *args)
       end
       
       # sales_order.hold
@@ -56,8 +56,8 @@ module Magento
       # Arguments:
       # 
       # string orderIncrementId - order increment id
-      def hold(client, *args)
-        commit(client, 'hold', *args)
+      def hold(connection, *args)
+        commit(connection, 'hold', *args)
       end
       
       # sales_order.unhold
@@ -68,8 +68,8 @@ module Magento
       # Arguments:
       # 
       # mixed orderIncrementId - order increment id
-      def unhold(client, *args)
-        commit(client, 'unhold', *args)
+      def unhold(connection, *args)
+        commit(connection, 'unhold', *args)
       end
       
       # sales_order.cancel
@@ -80,22 +80,22 @@ module Magento
       # Arguments:
       # 
       # mixed orderIncrementId - order increment id
-      def cancel(client, *args)
-        commit(client, 'cancel', *args)
+      def cancel(connection, *args)
+        commit(connection, 'cancel', *args)
       end
       
-      def find_by_id(client, id)
-        find(client, :first, {:order_id => id})
+      def find_by_id(connection, id)
+        find(connection, :first, {:order_id => id})
       end
       
-      def find_by_increment_id(client, id)
-        info(client, id)
+      def find_by_increment_id(connection, id)
+        info(connection, id)
       end
 
-      def find(client, find_type, options = {})
+      def find(connection, find_type, options = {})
         filters = {}
         options.each_pair { |k, v| filters[k] = {:eq => v} }
-        results = list(client, filters)
+        results = list(connection, filters)
         
         raise Magento::ApiError, "100 -> Requested order not exists." if results.blank?
         
@@ -103,24 +103,24 @@ module Magento
           info(results.first.increment_id)
         else
           results.collect do |o|
-            info(client, o.increment_id)
+            info(connection, o.increment_id)
           end
         end
       end
     end
     
-    def order_items(client)
+    def order_items(connection)
       self.items.collect do |item|
-        Magento::OrderItem.new(client, item)
+        Magento::OrderItem.new(connection, item)
       end
     end
     
-    def shipping_address(client)
-      Magento::CustomerAddress.new(client, @attributes["shipping_address"])
+    def shipping_address(connection)
+      Magento::CustomerAddress.new(connection, @attributes["shipping_address"])
     end
     
-    def billing_address(client)
-      Magento::CustomerAddress.new(client, @attributes["billing_address"])
+    def billing_address(connection)
+      Magento::CustomerAddress.new(connection, @attributes["billing_address"])
     end
   end
 end

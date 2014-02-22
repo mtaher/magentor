@@ -12,8 +12,8 @@ module Magento
       # Arguments:
       # 
       # int setId - attribute set ID
-      def list(client, *args)
-        results = commit(client, "list", *args)
+      def list(connection, *args)
+        results = commit(connection, "list", *args)
         results.collect do |result|
           new(result)
         end
@@ -27,8 +27,8 @@ module Magento
       # Arguments:
       # 
       # mixed storeView - store view id or code (optional)
-      def current_store(client, *args)
-        commit(client, "currentStore", *args)
+      def current_store(connection, *args)
+        commit(connection, "currentStore", *args)
       end
 
 
@@ -41,8 +41,8 @@ module Magento
       # 
       # mixed attributeId - attribute ID or code
       # mixed storeView - store view ID or code (optional)
-      def options(client, *args)
-        commit(client, "options", *args)
+      def options(connection, *args)
+        commit(connection, "options", *args)
       end
     end
   end

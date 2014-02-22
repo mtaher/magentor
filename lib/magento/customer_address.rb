@@ -14,8 +14,8 @@ module Magento
         # Arguments:
         # 
         # int customerId - Customer Id
-        def list(client, *args)
-          results = commit(client, "list", *args)
+        def list(connection, *args)
+          results = commit(connection, "list", *args)
           results.collect do |result|
             new(result)
           end
@@ -30,8 +30,8 @@ module Magento
         # 
         # int customerId - customer ID
         # array addressData - adress data (country, zip, city, etc...)
-        def create(client, customer_id, attributes)
-          id = commit(client, "create", customer_id, attributes)
+        def create(connection, customer_id, attributes)
+          id = commit(connection, "create", customer_id, attributes)
           record = new(attributes)
           record.id = id
           record
@@ -45,8 +45,8 @@ module Magento
         # Arguments:
         # 
         # int addressId - customer address ID
-        def info(client, *args)
-          new(commit(client, "info", *args))
+        def info(connection, *args)
+          new(commit(connection, "info", *args))
         end
 
         # customer_address.update
@@ -58,8 +58,8 @@ module Magento
         # 
         # int addressId - customer address ID
         # array addressData - adress data (country, zip, city, etc...)
-        def update(client, *args)
-          commit(client, "update", *args)
+        def update(connection, *args)
+          commit(connection, "update", *args)
         end
 
         # customer_address.delete
@@ -70,40 +70,40 @@ module Magento
         # Arguments:
         # 
         # int addressId - customer address ID
-        def delete(client, *args)
-          commit(client, "delete", *args)
+        def delete(connection, *args)
+          commit(connection, "delete", *args)
         end
         
-        def find_by_id(client, id)
-          info(client, id)
+        def find_by_id(connection, id)
+          info(connection, id)
         end
 
-        def find_by_customer_id(client, id)
-          list(client, id)
+        def find_by_customer_id(connection, id)
+          list(connection, id)
         end
         
     end
     
-    def country(client)
-      Magento::Country.find_by_id(client, self.country_id)
+    def country(connection)
+      Magento::Country.find_by_id(connection, self.country_id)
     end
     
-    def region(client)
-      Magento::Region.find_by_country_and_id(client, self.country_id, self.region_id)
+    def region(connection)
+      Magento::Region.find_by_country_and_id(connection, self.country_id, self.region_id)
     end
 
-    def delete(client)
-      self.class.delete(client, self.id)
+    def delete(connection)
+      self.class.delete(connection, self.id)
     end
     
-    def update_attribute(client, name, value)
+    def update_attribute(connection, name, value)
       @attributes[name] = value
-      self.class.update(client, self.id, Hash[*[name.to_sym, value]])
+      self.class.update(connection, self.id, Hash[*[name.to_sym, value]])
     end
     
-    def update_attributes(client, attrs)
+    def update_attributes(connection, attrs)
       attrs.each_pair { |k, v| @attributes[k] = v }
-      self.class.update(client, self.id, attrs)
+      self.class.update(connection, self.id, attrs)
     end
   end
 end

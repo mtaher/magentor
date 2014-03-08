@@ -1,5 +1,5 @@
 module Magento
-  class Connection 
+  class Connection
     attr_accessor :session, :config, :logger
 
     def initialize(config = {})
@@ -9,7 +9,7 @@ module Magento
     end
 
     def client
-      @client ||= XMLRPC::Client.new(config[:host], config[:path], config[:port])
+      @client ||= XMLRPC::Client.new(config[:host], config[:path], config[:port], config[:proxy_host], config[:proxy_host], config[:user], config[:password], config[:use_ssl], config[:timeout])
       @client.http_header_extra ||= { "accept-encoding" => "identity" }
       @client
     end
